@@ -84,43 +84,28 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
-    def do_create(self, arg):
-        """Usage: create <Class name> <param 1> <param 2> <param 3>...
-        param: <key name>=<value>
-        value: "<value>" //with double quotes
-        create a class instance with parameters and print id
-        """
+    def do_create(self, args):
+        """Create an object of any class."""
         try:
-            if not arg:
+            if not args:
                 raise SyntaxError()
-            args = arg.split(" ")
+            arg_list = args.split(" ")
+            kw = {}
+            for arg in arg_list[1:]:
+                arg_splitted = arg.split("=")
+                arg_splitted[1] = eval(arg_splitted[1])
+                if type(arg_splitted[1]) is str:
+                    arg_splitted[1] = arg_splitted[1].replace
+                    ("_", " ").replace('"', '\\"')
+                kw[arg_splitted[0]] = arg_splitted[1]
 
-            kwargs = {}
-            for i in range(1, len(args)):
-                key, val = tuple(my_list[i].split("="))
-                if val[0] == '"':
-                    val = val.strip('"').replace("_", " ")
-                else:
-                    try:
-                        val = eval(val)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = val
-
-            if kwargs == {}:
-                obj = eval(args[0])()
-            else:
-                obj = eval(args[0])(**kwargs)
-                storage.new(obj)
-
-            print(obj.id)
-            obj.save()
-
-        except SyntaxError:
-            print("Missing Class name")
-        except NameError:
-            print("Class do not exist")
-
+        except SyntaxError():
+            print("** class name missing **")
+        except NameError():
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
