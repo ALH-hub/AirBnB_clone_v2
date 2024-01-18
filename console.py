@@ -87,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """Usage: create <Class name> <param 1> <param 2> <param 3>...
         param: <key name>=<value>
-        value: "<value>" //with double quotes
+        value: "<value>"
         create a class instance with parameters and print id
         """
         try:
@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
 
             kwargs = {}
             for i in range(1, len(args)):
-                key, val = tuple(my_list[i].split("="))
+                key, val = tuple(args[i].split("="))
                 if val[0] == '"':
                     val = val.strip('"').replace("_", " ")
                 else:
@@ -117,10 +117,9 @@ class HBNBCommand(cmd.Cmd):
             obj.save()
 
         except SyntaxError:
-            print("Missing Class name")
+            print("** class name missing **")
         except NameError:
-            print("Class do not exist")
-
+            print("** class doesn't exist **")
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)

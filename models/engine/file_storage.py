@@ -50,3 +50,10 @@ class FileStorage:
                     self.new(eval(class_name)(**obj))
         except FileNotFoundError:
             return
+
+    def delete(self, obj=None):
+        """delete a given object"""
+        try:
+            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
+        except (AttributeError, KeyError):
+            pass
