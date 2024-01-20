@@ -7,13 +7,14 @@ from sqlalchemy import String
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column
 
+
 class State(BaseModel):
     """state class definition
 
     Attributes:
         __tablename (str): the name of the sql table
         name (str): name of state
-        places (sqlalchemy.relationship): the relationship between States and Place
+        places (sqlalchemy.relationship): relates states to place
     """
 
     __tablename__ = "states"

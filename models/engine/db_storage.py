@@ -23,19 +23,20 @@ class DBStorage:
 
     def __init__(self):
         """initialize the engine"""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-                                      format(getenv("HBNB_MYSQL_USER"),
-                                             getenv("HBNB_MYSQL_PWD"),
-                                             getenv("HBNB_MYSQL_HOST"),
-                                             getenv("HBNB_MYSQL_DB")),
-                                             
-                                             pool_pre_ping=True)
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".
+            format(getenv("HBNB_MYSQL_USER"),
+                   getenv("HBNB_MYSQL_PWD"),
+                   getenv("HBNB_MYSQL_HOST"),
+                   getenv("HBNB_MYSQL_DB")
+                   ), pool_pre_ping=True
+                   )
         if getenv("HBNB_DEV" == "test"):
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """querry the current database session
-        
+
         Return:
         the querried classes in the formate: <class-name> <object-id> = obj
         """
@@ -50,8 +51,9 @@ class DBStorage:
             if type(cls) == str:
                 cls = eval(cls)
             objs = self.__session.query(cls)
-        return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
-    
+        return {"{}.{}".format(type(obj).__name__, obj.id):
+                obj for obj in objs}
+
     def new(self, obj):
         """add object to database"""
         self.__session.add(obj)

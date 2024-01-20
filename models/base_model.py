@@ -9,7 +9,6 @@ from sqlalchemy import DateTime
 from sqlalchemy import String
 
 
-
 Base = declarative_base()
 
 
@@ -43,7 +42,6 @@ class BaseModel:
                     self.__dict__[k] = datetime.strptime(v, form)
                 if k != "__class__":
                     setattr(self, k, v)
-            
 
     def save(self):
         """change updated_at to the current date"""
@@ -62,7 +60,7 @@ class BaseModel:
         instance_dict["__class__"] = self.__class__.__name__
         instance_dict.pop("_sa_instance_state")
         return instance_dict
-    
+
     def delete(self):
         """delete the current instance from storage"""
         models.storage.delete(self)
