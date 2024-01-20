@@ -36,10 +36,10 @@ class BaseModel:
         self.id = str(uuid4())
         self.created_at = datetime.today()
         self.updated_at = datetime.today()
-        if len(kwargs) != 0:
+        if kwargs:
             for k, v in kwargs.items():
                 if k == "created_at" or k == "updated_at":
-                    self.__dict__[k] = datetime.strptime(v, form)
+                    v = datetime.strptime(v, form)
                 if k != "__class__":
                     setattr(self, k, v)
 
@@ -57,8 +57,8 @@ class BaseModel:
         instance_dict = self.__dict__.copy()
         instance_dict["created_at"] = self.created_at.isoformat()
         instance_dict["updated_at"] = self.updated_at.isoformat()
-        instance_dict["__class__"] = self.__class__.__name__
-        instance_dict.pop("_sa_instance_state")
+        instance_dict["__class__"] = str(type(self).__name__)
+        instance_dict.pop("_sa_instance_state", None)
         return instance_dict
 
     def delete(self):
