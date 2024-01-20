@@ -11,7 +11,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """state class definition
 
     Attributes:

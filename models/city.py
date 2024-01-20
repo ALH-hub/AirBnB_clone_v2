@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column
 
 
-class City(BaseModel):
+class City(BaseModel, Base):
     """city class definition
 
     Attributes:
