@@ -3,10 +3,29 @@
 import models
 from uuid import uuid4
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column
+from sqlalchemy import DateTime
+from sqlalchemy import String
+
+
+
+Base = declarative_base()
 
 
 class BaseModel:
-    """base class BaseModel for the project"""
+    """base class BaseModel for the project
+
+    Attributes:
+    id (sqlalchemy String): primary key
+    created_at (sqlalchemy DateTime): the date created at
+    updated_at (sqlalchemy DateTime): the time lastly modified
+    """
+
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+
     def __init__(self, *args, **kwargs):
         """Initialize an instance
 
@@ -22,14 +41,14 @@ class BaseModel:
             for k, v in kwargs.items():
                 if k == "created_at" or k == "updated_at":
                     self.__dict__[k] = datetime.strptime(v, form)
-                else:
-                    self.__dict__[k] = v
-        else:
-            models.storage.new(self)
+                if k != "__class__":
+                    setattr(self, k, v)
+            
 
     def save(self):
         """change updated_at to the current date"""
         self.updated_at = datetime.today()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -41,7 +60,12 @@ class BaseModel:
         instance_dict["created_at"] = self.created_at.isoformat()
         instance_dict["updated_at"] = self.updated_at.isoformat()
         instance_dict["__class__"] = self.__class__.__name__
+        instance_dict.pop("_sa_instance_state")
         return instance_dict
+    
+    def delete(self):
+        """delete the current instance from storage"""
+        models.storage.delete(self)
 
     def __str__(self):
         """return the string representation of the BaseModel instance"""
