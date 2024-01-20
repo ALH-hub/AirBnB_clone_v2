@@ -1,5 +1,4 @@
 """definition of the DBStorage engine"""
-
 from os import getenv
 from models.base_model import Base
 from models.base_model import BaseModel

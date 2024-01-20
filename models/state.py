@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-"""the state class."""
-from os import getenv
+"""State class"""
 import models
-from models.base_model import BaseModel
+from os import getenv
 from models.base_model import Base
+from models.base_model import BaseModel
 from models.city import City
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column
 
 
 class State(BaseModel, Base):
@@ -19,10 +18,9 @@ class State(BaseModel, Base):
         name (str): name of state
         places (sqlalchemy.relationship): relates states to place
     """
-
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    places = relationship("Place", backref="cities", cascade="delete")
+    cities = relationship("City",  backref="state", cascade="delete")
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
