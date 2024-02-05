@@ -11,6 +11,7 @@ from fabric.api import run
 
 env.hosts = ["54.237.85.142", "54.160.79.143"]
 
+
 def do_pack():
     """create the .tgz file"""
     dt = datetime.utcnow()
@@ -26,6 +27,7 @@ def do_pack():
     if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
     return file
+
 
 def do_deploy(archive_path):
     """distribute archive to web server
@@ -65,6 +67,7 @@ def do_deploy(archive_path):
            format(name)).failed is True:
         return False
     return True
+
 
 def deploy():
     """create and distribute archieve to web server"""
