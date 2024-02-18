@@ -21,7 +21,7 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
     """Display C followed by the value of text"""
-    return f'C {text}'
+    return "C {}".format(text)
 
 
 if __name__ == "__main__":
