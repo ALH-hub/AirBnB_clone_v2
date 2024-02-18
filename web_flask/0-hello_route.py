@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Flask On the root path"""
 from flask import Flask, render_template
 
 
